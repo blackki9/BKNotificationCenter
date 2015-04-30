@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 @import UIKit;
 
+typedef void (^CompletionAlertBlock) (NSInteger buttonIndex, NSString *notificationId);
+typedef void (^CompletionAfterOpenAppFromNotification) (NSString* notificationId);
+
 @interface BKNotificationCenterImp : NSObject <UIAlertViewDelegate>
 
 + (instancetype)sharedCenter;
@@ -21,5 +24,10 @@
 
 - (void)scheduleSingleNotificationOnDate:(NSDate*)fireDate message:(NSString*)message key:(NSString*)key;
 - (void)scheduleSingleNotificationOnDate:(NSDate*)fireDate message:(NSString*)message key:(NSString*)key userInfo:(NSDictionary*)userInfo;
+
+- (void)setCompletitionHandler:(CompletionAlertBlock)finishBlock;
+- (void)setActionAfterOpenApp:(CompletionAfterOpenAppFromNotification)afterOpenFinishBlock;
+
+- (void)setButtonTitles:(NSArray*)titles;
 
 @end

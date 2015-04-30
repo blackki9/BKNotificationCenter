@@ -7,14 +7,27 @@
 //
 
 #import "BKNotificationCenterImp.h"
+#import "BKNotificationCanceler.h"
+#import "BKNotificationRefresher.h"
+#import "BKNotificationUtilities.h"
+#import "BKNotificationScheduler.h"
+
 @import AVFoundation;
 
-NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
+NSString * const kFirstLaunchKey = @"kFirstLaunchKey";
 
 @interface BKNotificationCenterImp ()
 
-@property (nonatomic, strong)  AVAudioPlayer* notificationPlayer;
+@property (nonatomic, strong) AVAudioPlayer* notificationPlayer;
 @property (nonatomic, strong) NSArray* currentButtonTitles;
+
+@property (nonatomic, strong) BKNotificationCanceler* canceler;
+@property (nonatomic, strong) BKNotificationRefresher* refresher;
+@property (nonatomic, strong) BKNotificationUtilities* utilities;
+@property (nonatomic, strong) BKNotificationScheduler* scheduler;
+
+@property (nonatomic,strong) CompletionAlertBlock finishBlock;
+@property (nonatomic,strong) CompletionAfterOpenAppFromNotification afterOpenFinishBlock;
 
 @end
 
@@ -32,11 +45,24 @@ NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
     return sharedInstance;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _utilities = [[BKNotificationUtilities alloc] init];
+        _canceler = [[BKNotificationCanceler alloc] initWithNotificationKey:[_utilities notificationIdKey]];
+        _refresher = [[BKNotificationRefresher alloc] init];
+        _scheduler = [[BKNotificationScheduler alloc] init];
+    }
+    
+    return self;
+}
+
 - (void)initializeCenterWithApplication:(UIApplication*)application
 {
     [self askUserToConfirmSendNotificationsWithApplication:application];
     [self cleanIfFirstLaunch];
-    [self checkForOverdueNotifications];
+    [self.refresher checkForOverdueNotifications];
     [self initSound];
 }
 
@@ -49,16 +75,25 @@ NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
 
 - (void)cleanIfFirstLaunch
 {
-    BOOL isFirstLaunch = ![[NSUserDefaults standardUserDefaults] boolForKey:@"isFirstLaunch"];
-    if(isFirstLaunch)
+    if([self isFirstLaunch])
     {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isFirstLaunch"];
+        [self setFirstLaunch];
         [self cancelAllNotifications];
     }
     else
     {
-        [self refreshNotifications];
+        [self.refresher refreshNotifications];
     }
+}
+
+- (BOOL)isFirstLaunch
+{
+    return ![[NSUserDefaults standardUserDefaults] boolForKey:kFirstLaunchKey];
+}
+
+- (void)setFirstLaunch
+{
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFirstLaunchKey];
 }
 
 - (void)initSound
@@ -79,14 +114,17 @@ NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
 
 - (void)didReceiveLocalNotification:(UILocalNotification*)localNotification
 {
-    
+    [self playNotificationSoundIfSharedAppIsActive];
+    [self showAlertIfSharedAppIsActiveForLocalNotification:localNotification];
 }
 
 #pragma mark - sound
 
-- (void)playNotificationSound
+- (void)playNotificationSoundIfSharedAppIsActive
 {
-    [self.notificationPlayer play];
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive ) {
+        [self.notificationPlayer play];
+    }
 }
 
 #pragma mark - alert
@@ -94,7 +132,7 @@ NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
 - (void)showAlertIfSharedAppIsActiveForLocalNotification:(UILocalNotification*)localNotification
 {
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive ) {
-        
+        [self showAlertForLocalNotification:localNotification];
     }
 }
 
@@ -102,7 +140,7 @@ NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
 {
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:localNotification.alertTitle message:localNotification.alertBody delegate:self cancelButtonTitle:[self cancelButtonTitle] otherButtonTitles:nil];
     
-    //TODO
+    alert = [self setupAlertButtons:alert];
     
     [alert show];
 }
@@ -132,74 +170,39 @@ NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
 - (void)scheduleSingleNotificationOnDate:(NSDate*)fireDate message:(NSString*)message key:(NSString*)key
 {
     [self scheduleSingleNotificationOnDate:fireDate message:message key:key userInfo:[NSDictionary dictionary]];
-  }
+}
 
 - (void)scheduleSingleNotificationOnDate:(NSDate*)fireDate message:(NSString*)message key:(NSString*)key userInfo:(NSDictionary*)userInfo
 {
-    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
-    
-    localNotification.fireDate = fireDate;
-    localNotification.alertBody = message;
-    localNotification.alertTitle = [self appName];
-    localNotification.userInfo = [self userInfoForLocalNotificationWithInfo:userInfo key:key];
-    
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-}
-
-- (NSDictionary*)userInfoForLocalNotificationWithInfo:(NSDictionary*)info key:(NSString*)key
-{
-    NSMutableDictionary* result = [NSMutableDictionary dictionary];
-    
-    result[kNotificationAlertKey] = key;
-    
-    [result addEntriesFromDictionary:info];
-    
-    return result;
+    [self.scheduler scheduleSingleNotificationOnDate:fireDate message:message key:key userInfo:userInfo];
 }
 
 #pragma mark - cancel
 - (void)cancelNotificationByKey:(NSString*)key
 {
-    UILocalNotification* localNotification = [self localNotificationWithKey:key];
-    if(localNotification) {
-        [[UIApplication sharedApplication] cancelLocalNotification:localNotification];
-    }
-}
-
-- (UILocalNotification*)localNotificationWithKey:(NSString*)key
-{
-    for(UILocalNotification* localNotification in [[UIApplication sharedApplication] scheduledLocalNotifications]) {
-        if([localNotification.userInfo[kNotificationAlertKey] isEqualToString:key]) {
-            return localNotification;
-        }
-    }
-    
-    return nil;
+    [self.canceler cancelNotificationByKey:key];
 }
 
 - (void)cancelAllNotifications
 {
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [self.canceler cancelAllNotifications];
 }
 
-#pragma mark - refresh
+#pragma mark - set blocks
 
-- (void)refreshNotifications
+- (void)setCompletitionHandler:(CompletionAlertBlock)finishBlock
 {
-    
+    self.finishBlock = finishBlock;
 }
 
-- (void)checkForOverdueNotifications
+- (void)setActionAfterOpenApp:(CompletionAfterOpenAppFromNotification)afterOpenFinishBlock
 {
-    //TODO check outdated notifications and clean it
+    self.afterOpenFinishBlock = afterOpenFinishBlock;
 }
 
-#pragma mark - utils
-
-- (NSString*)appName
+- (void)setButtonTitles:(NSArray*)titles
 {
-    return [[[NSBundle mainBundle] localizedInfoDictionary]
-            objectForKey:@"CFBundleDisplayName"];
+    self.currentButtonTitles = titles;
 }
 
 @end
