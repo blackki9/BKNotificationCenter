@@ -11,23 +11,18 @@
 #import "BKNotificationRefresher.h"
 #import "BKNotificationUtilities.h"
 #import "BKNotificationScheduler.h"
+#import "BKSoundNotifier.h"
+#import "BKAlertNotifier.h"
 
-@import AVFoundation;
-
-NSString * const kFirstLaunchKey = @"kFirstLaunchKey";
 
 @interface BKNotificationCenterImp ()
-
-@property (nonatomic, strong) AVAudioPlayer* notificationPlayer;
-@property (nonatomic, strong) NSArray* currentButtonTitles;
 
 @property (nonatomic, strong) BKNotificationCanceler* canceler;
 @property (nonatomic, strong) BKNotificationRefresher* refresher;
 @property (nonatomic, strong) BKNotificationUtilities* utilities;
 @property (nonatomic, strong) BKNotificationScheduler* scheduler;
-
-@property (nonatomic,strong) CompletionAlertBlock finishBlock;
-@property (nonatomic,strong) CompletionAfterOpenAppFromNotification afterOpenFinishBlock;
+@property (nonatomic, strong) BKSoundNotifier* soundNotifier;
+@property (nonatomic, strong) BKAlertNotifier* alertNotifier;
 
 @end
 
@@ -52,7 +47,9 @@ NSString * const kFirstLaunchKey = @"kFirstLaunchKey";
         _utilities = [[BKNotificationUtilities alloc] init];
         _canceler = [[BKNotificationCanceler alloc] initWithNotificationKey:[_utilities notificationIdKey]];
         _refresher = [[BKNotificationRefresher alloc] init];
-        _scheduler = [[BKNotificationScheduler alloc] init];
+        _scheduler = [[BKNotificationScheduler alloc] initWithNotificationUtilities:_utilities];
+        _soundNotifier = [[BKSoundNotifier alloc] init];
+        _alertNotifier = [[BKAlertNotifier alloc] init];
     }
     
     return self;
@@ -63,7 +60,7 @@ NSString * const kFirstLaunchKey = @"kFirstLaunchKey";
     [self askUserToConfirmSendNotificationsWithApplication:application];
     [self cleanIfFirstLaunch];
     [self.refresher checkForOverdueNotifications];
-    [self initSound];
+    [self.soundNotifier initSound];
 }
 
 - (void)askUserToConfirmSendNotificationsWithApplication:(UIApplication*)application
@@ -88,82 +85,20 @@ NSString * const kFirstLaunchKey = @"kFirstLaunchKey";
 
 - (BOOL)isFirstLaunch
 {
-    return ![[NSUserDefaults standardUserDefaults] boolForKey:kFirstLaunchKey];
+    return ![[NSUserDefaults standardUserDefaults] boolForKey:[self.utilities firstLaunchKey]];
 }
 
 - (void)setFirstLaunch
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kFirstLaunchKey];
-}
-
-- (void)initSound
-{
-    NSError *error;
-    NSURL *audioURL = [[NSBundle mainBundle ]URLForResource:@"notification_sound.caf" withExtension:nil];
-    
-    self.notificationPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:audioURL error:&error];
-    
-    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    NSError *errorSession = nil;
-    [audioSession setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionDuckOthers error:nil];
-    [audioSession setActive:NO error:&errorSession];
-    
-    [self.notificationPlayer prepareToPlay];
-    [self.notificationPlayer setVolume:1.0];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[self.utilities firstLaunchKey]];
 }
 
 - (void)didReceiveLocalNotification:(UILocalNotification*)localNotification
 {
-    [self playNotificationSoundIfSharedAppIsActive];
-    [self showAlertIfSharedAppIsActiveForLocalNotification:localNotification];
+    [self.soundNotifier playNotificationSoundIfSharedAppIsActive];
+    [self.alertNotifier showAlertIfSharedAppIsActiveForLocalNotification:localNotification];
 }
 
-#pragma mark - sound
-
-- (void)playNotificationSoundIfSharedAppIsActive
-{
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive ) {
-        [self.notificationPlayer play];
-    }
-}
-
-#pragma mark - alert
-
-- (void)showAlertIfSharedAppIsActiveForLocalNotification:(UILocalNotification*)localNotification
-{
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive ) {
-        [self showAlertForLocalNotification:localNotification];
-    }
-}
-
-- (void)showAlertForLocalNotification:(UILocalNotification*)localNotification
-{
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:localNotification.alertTitle message:localNotification.alertBody delegate:self cancelButtonTitle:[self cancelButtonTitle] otherButtonTitles:nil];
-    
-    alert = [self setupAlertButtons:alert];
-    
-    [alert show];
-}
-
-- (NSString*)cancelButtonTitle
-{
-    if(self.currentButtonTitles && self.currentButtonTitles.count) {
-        return @"Cancel";
-    }
-    
-    return @"OK";
-}
-
-- (UIAlertView*)setupAlertButtons:(UIAlertView*)alert
-{
-    if(self.currentButtonTitles) {
-        for(NSString* buttonTitle in self.currentButtonTitles) {
-            [alert addButtonWithTitle:buttonTitle];
-        }
-    }
-    
-    return alert;
-}
 
 #pragma mark - schedule
 
@@ -192,17 +127,17 @@ NSString * const kFirstLaunchKey = @"kFirstLaunchKey";
 
 - (void)setCompletitionHandler:(CompletionAlertBlock)finishBlock
 {
-    self.finishBlock = finishBlock;
+    [self.alertNotifier setCompletitionHandler:finishBlock];
 }
 
 - (void)setActionAfterOpenApp:(CompletionAfterOpenAppFromNotification)afterOpenFinishBlock
 {
-    self.afterOpenFinishBlock = afterOpenFinishBlock;
+    [self.alertNotifier setActionAfterOpenApp:afterOpenFinishBlock];
 }
 
 - (void)setButtonTitles:(NSArray*)titles
 {
-    self.currentButtonTitles = titles;
+    [self.alertNotifier setButtonTitles:titles];
 }
 
 @end

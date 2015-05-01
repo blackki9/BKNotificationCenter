@@ -11,6 +11,7 @@
 @interface BKNotificationUtilities : NSObject
 
 - (NSString*)notificationIdKey;
+- (NSString*)firstLaunchKey;
 - (NSString*)appName;
 
 @end

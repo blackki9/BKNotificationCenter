@@ -10,6 +10,21 @@
 		FD3EB9A91AF27B8200FA17EE /* BKNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = FD3EB9A81AF27B8200FA17EE /* BKNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FD3EB9AF1AF27B8200FA17EE /* BKNotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3EB9A31AF27B8200FA17EE /* BKNotificationCenter.framework */; };
 		FD3EB9B61AF27B8200FA17EE /* BKNotificationCenterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FD3EB9B51AF27B8200FA17EE /* BKNotificationCenterTests.m */; };
+		FD54402C1AF3A0E80068D644 /* BKNotificationCenterImp.m in Sources */ = {isa = PBXBuildFile; fileRef = FD5440221AF3A0E80068D644 /* BKNotificationCenterImp.m */; };
+		FD54402D1AF3A0E80068D644 /* BKNotificationUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = FD5440231AF3A0E80068D644 /* BKNotificationUtilities.m */; };
+		FD54402E1AF3A0E80068D644 /* BKNotificationCanceler.h in Headers */ = {isa = PBXBuildFile; fileRef = FD5440241AF3A0E80068D644 /* BKNotificationCanceler.h */; };
+		FD54402F1AF3A0E80068D644 /* BKNotificationCanceler.m in Sources */ = {isa = PBXBuildFile; fileRef = FD5440251AF3A0E80068D644 /* BKNotificationCanceler.m */; };
+		FD5440301AF3A0E80068D644 /* BKNotificationCenterImp.h in Headers */ = {isa = PBXBuildFile; fileRef = FD5440261AF3A0E80068D644 /* BKNotificationCenterImp.h */; };
+		FD5440311AF3A0E80068D644 /* BKNotificationRefresher.h in Headers */ = {isa = PBXBuildFile; fileRef = FD5440271AF3A0E80068D644 /* BKNotificationRefresher.h */; };
+		FD5440321AF3A0E80068D644 /* BKNotificationRefresher.m in Sources */ = {isa = PBXBuildFile; fileRef = FD5440281AF3A0E80068D644 /* BKNotificationRefresher.m */; };
+		FD5440331AF3A0E80068D644 /* BKNotificationScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = FD5440291AF3A0E80068D644 /* BKNotificationScheduler.h */; };
+		FD5440341AF3A0E80068D644 /* BKNotificationScheduler.m in Sources */ = {isa = PBXBuildFile; fileRef = FD54402A1AF3A0E80068D644 /* BKNotificationScheduler.m */; };
+		FD5440351AF3A0E80068D644 /* BKNotificationUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = FD54402B1AF3A0E80068D644 /* BKNotificationUtilities.h */; };
+		FD54403E1AF3A1AC0068D644 /* BKSoundNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FD54403C1AF3A1AC0068D644 /* BKSoundNotifier.h */; };
+		FD54403F1AF3A1AC0068D644 /* BKSoundNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FD54403D1AF3A1AC0068D644 /* BKSoundNotifier.m */; };
+		FD5440421AF3A2A60068D644 /* notification_sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = FD5440411AF3A2A60068D644 /* notification_sound.caf */; };
+		FD5440461AF3A47D0068D644 /* BKAlertNotifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FD5440441AF3A47D0068D644 /* BKAlertNotifier.h */; };
+		FD5440471AF3A47D0068D644 /* BKAlertNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FD5440451AF3A47D0068D644 /* BKAlertNotifier.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +44,22 @@
 		FD3EB9AE1AF27B8200FA17EE /* BKNotificationCenterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BKNotificationCenterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD3EB9B41AF27B8200FA17EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FD3EB9B51AF27B8200FA17EE /* BKNotificationCenterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BKNotificationCenterTests.m; sourceTree = "<group>"; };
+		FD5440221AF3A0E80068D644 /* BKNotificationCenterImp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKNotificationCenterImp.m; sourceTree = "<group>"; };
+		FD5440231AF3A0E80068D644 /* BKNotificationUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKNotificationUtilities.m; sourceTree = "<group>"; };
+		FD5440241AF3A0E80068D644 /* BKNotificationCanceler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKNotificationCanceler.h; sourceTree = "<group>"; };
+		FD5440251AF3A0E80068D644 /* BKNotificationCanceler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKNotificationCanceler.m; sourceTree = "<group>"; };
+		FD5440261AF3A0E80068D644 /* BKNotificationCenterImp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKNotificationCenterImp.h; sourceTree = "<group>"; };
+		FD5440271AF3A0E80068D644 /* BKNotificationRefresher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKNotificationRefresher.h; sourceTree = "<group>"; };
+		FD5440281AF3A0E80068D644 /* BKNotificationRefresher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKNotificationRefresher.m; sourceTree = "<group>"; };
+		FD5440291AF3A0E80068D644 /* BKNotificationScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKNotificationScheduler.h; sourceTree = "<group>"; };
+		FD54402A1AF3A0E80068D644 /* BKNotificationScheduler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKNotificationScheduler.m; sourceTree = "<group>"; };
+		FD54402B1AF3A0E80068D644 /* BKNotificationUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKNotificationUtilities.h; sourceTree = "<group>"; };
+		FD54403C1AF3A1AC0068D644 /* BKSoundNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKSoundNotifier.h; sourceTree = "<group>"; };
+		FD54403D1AF3A1AC0068D644 /* BKSoundNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKSoundNotifier.m; sourceTree = "<group>"; };
+		FD5440411AF3A2A60068D644 /* notification_sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notification_sound.caf; sourceTree = "<group>"; };
+		FD5440441AF3A47D0068D644 /* BKAlertNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BKAlertNotifier.h; sourceTree = "<group>"; };
+		FD5440451AF3A47D0068D644 /* BKAlertNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BKAlertNotifier.m; sourceTree = "<group>"; };
+		FD5440481AF3A5310068D644 /* Blocks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Blocks.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +102,7 @@
 		FD3EB9A51AF27B8200FA17EE /* BKNotificationCenter */ = {
 			isa = PBXGroup;
 			children = (
+				FD5440401AF3A2A60068D644 /* Resources */,
 				FD3EB9BF1AF27BB000FA17EE /* implementation */,
 				FD3EB9A81AF27B8200FA17EE /* BKNotificationCenter.h */,
 				FD3EB9A61AF27B8200FA17EE /* Supporting Files */,
@@ -106,8 +138,87 @@
 		FD3EB9BF1AF27BB000FA17EE /* implementation */ = {
 			isa = PBXGroup;
 			children = (
+				FD5440431AF3A46F0068D644 /* alertNotifier */,
+				FD54403B1AF3A19C0068D644 /* soundNotifier */,
+				FD54403A1AF3A1690068D644 /* alertNotifier */,
+				FD5440391AF3A13B0068D644 /* utils */,
+				FD5440381AF3A1060068D644 /* scheduler */,
+				FD5440371AF3A0FB0068D644 /* refresher */,
+				FD5440361AF3A0EE0068D644 /* canceler */,
+				FD5440221AF3A0E80068D644 /* BKNotificationCenterImp.m */,
+				FD5440261AF3A0E80068D644 /* BKNotificationCenterImp.h */,
+				FD5440481AF3A5310068D644 /* Blocks.h */,
 			);
 			path = implementation;
+			sourceTree = "<group>";
+		};
+		FD5440361AF3A0EE0068D644 /* canceler */ = {
+			isa = PBXGroup;
+			children = (
+				FD5440241AF3A0E80068D644 /* BKNotificationCanceler.h */,
+				FD5440251AF3A0E80068D644 /* BKNotificationCanceler.m */,
+			);
+			name = canceler;
+			sourceTree = "<group>";
+		};
+		FD5440371AF3A0FB0068D644 /* refresher */ = {
+			isa = PBXGroup;
+			children = (
+				FD5440271AF3A0E80068D644 /* BKNotificationRefresher.h */,
+				FD5440281AF3A0E80068D644 /* BKNotificationRefresher.m */,
+			);
+			name = refresher;
+			sourceTree = "<group>";
+		};
+		FD5440381AF3A1060068D644 /* scheduler */ = {
+			isa = PBXGroup;
+			children = (
+				FD5440291AF3A0E80068D644 /* BKNotificationScheduler.h */,
+				FD54402A1AF3A0E80068D644 /* BKNotificationScheduler.m */,
+			);
+			name = scheduler;
+			sourceTree = "<group>";
+		};
+		FD5440391AF3A13B0068D644 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				FD5440231AF3A0E80068D644 /* BKNotificationUtilities.m */,
+				FD54402B1AF3A0E80068D644 /* BKNotificationUtilities.h */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
+		FD54403A1AF3A1690068D644 /* alertNotifier */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = alertNotifier;
+			sourceTree = "<group>";
+		};
+		FD54403B1AF3A19C0068D644 /* soundNotifier */ = {
+			isa = PBXGroup;
+			children = (
+				FD54403C1AF3A1AC0068D644 /* BKSoundNotifier.h */,
+				FD54403D1AF3A1AC0068D644 /* BKSoundNotifier.m */,
+			);
+			name = soundNotifier;
+			sourceTree = "<group>";
+		};
+		FD5440401AF3A2A60068D644 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FD5440411AF3A2A60068D644 /* notification_sound.caf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FD5440431AF3A46F0068D644 /* alertNotifier */ = {
+			isa = PBXGroup;
+			children = (
+				FD5440441AF3A47D0068D644 /* BKAlertNotifier.h */,
+				FD5440451AF3A47D0068D644 /* BKAlertNotifier.m */,
+			);
+			name = alertNotifier;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,7 +228,14 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD5440301AF3A0E80068D644 /* BKNotificationCenterImp.h in Headers */,
+				FD54403E1AF3A1AC0068D644 /* BKSoundNotifier.h in Headers */,
+				FD5440311AF3A0E80068D644 /* BKNotificationRefresher.h in Headers */,
+				FD5440331AF3A0E80068D644 /* BKNotificationScheduler.h in Headers */,
+				FD5440461AF3A47D0068D644 /* BKAlertNotifier.h in Headers */,
+				FD5440351AF3A0E80068D644 /* BKNotificationUtilities.h in Headers */,
 				FD3EB9A91AF27B8200FA17EE /* BKNotificationCenter.h in Headers */,
+				FD54402E1AF3A0E80068D644 /* BKNotificationCanceler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +318,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD5440421AF3A2A60068D644 /* notification_sound.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +336,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD54403F1AF3A1AC0068D644 /* BKSoundNotifier.m in Sources */,
+				FD54402D1AF3A0E80068D644 /* BKNotificationUtilities.m in Sources */,
+				FD54402C1AF3A0E80068D644 /* BKNotificationCenterImp.m in Sources */,
+				FD5440341AF3A0E80068D644 /* BKNotificationScheduler.m in Sources */,
+				FD5440471AF3A47D0068D644 /* BKAlertNotifier.m in Sources */,
+				FD5440321AF3A0E80068D644 /* BKNotificationRefresher.m in Sources */,
+				FD54402F1AF3A0E80068D644 /* BKNotificationCanceler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +458,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = BKNotificationCenter/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -347,6 +474,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = BKNotificationCenter/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -402,6 +530,7 @@
 				FD3EB9BB1AF27B8200FA17EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		FD3EB9BC1AF27B8200FA17EE /* Build configuration list for PBXNativeTarget "BKNotificationCenterTests" */ = {
 			isa = XCConfigurationList;
@@ -410,6 +539,7 @@
 				FD3EB9BE1AF27B8200FA17EE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

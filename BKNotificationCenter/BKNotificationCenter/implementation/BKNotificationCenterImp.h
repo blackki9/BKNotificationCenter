@@ -7,10 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-@import UIKit;
+#import "Blocks.h"
 
-typedef void (^CompletionAlertBlock) (NSInteger buttonIndex, NSString *notificationId);
-typedef void (^CompletionAfterOpenAppFromNotification) (NSString* notificationId);
+@import UIKit;
 
 @interface BKNotificationCenterImp : NSObject <UIAlertViewDelegate>
 

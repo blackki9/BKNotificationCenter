@@ -9,12 +9,18 @@
 #import "BKNotificationUtilities.h"
 
 NSString * const kNotificationAlertKey = @"kNotificationAlertKey";
+NSString * const kFirstLaunchKey = @"kFirstLaunchKey";
 
 @implementation BKNotificationUtilities
 
 - (NSString*)notificationIdKey
 {
     return kNotificationAlertKey;
+}
+
+- (NSString*)firstLaunchKey
+{
+    return kFirstLaunchKey;
 }
 
 - (NSString*)appName
