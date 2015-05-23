@@ -24,6 +24,9 @@
 @property (nonatomic, strong) BKSoundNotifier* soundNotifier;
 @property (nonatomic, strong) BKAlertNotifier* alertNotifier;
 
+@property (nonatomic,strong) CompletionAfterOpenAppFromNotification afterOpenFinishBlock;
+@property (nonatomic, strong) UILocalNotification* currentNotification;
+
 @end
 
 
@@ -49,7 +52,7 @@
         _refresher = [[BKNotificationRefresher alloc] init];
         _scheduler = [[BKNotificationScheduler alloc] initWithNotificationUtilities:_utilities];
         _soundNotifier = [[BKSoundNotifier alloc] init];
-        _alertNotifier = [[BKAlertNotifier alloc] init];
+        _alertNotifier = [[BKAlertNotifier alloc] initWithUtilities:_utilities];
     }
     
     return self;
@@ -93,12 +96,32 @@
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:[self.utilities firstLaunchKey]];
 }
 
+#pragma mark - receive local notification
+
 - (void)didReceiveLocalNotification:(UILocalNotification*)localNotification
 {
+    self.currentNotification = localNotification;
+    
     [self.soundNotifier playNotificationSoundIfSharedAppIsActive];
     [self.alertNotifier showAlertIfSharedAppIsActiveForLocalNotification:localNotification];
+    [self triggerActionAfterOpenAppFromIfSharedAppInactive];
+    
+    self.currentNotification = nil;
 }
 
+- (void)triggerActionAfterOpenAppFromIfSharedAppInactive
+{
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateInactive) {
+        if(self.afterOpenFinishBlock) {
+            self.afterOpenFinishBlock([self notificationIdFromLocalNotification:self.currentNotification]);
+        }
+    }
+}
+                                      
+- (NSString*)notificationIdFromLocalNotification:(UILocalNotification*)localNotification
+{
+    return localNotification.userInfo[[self.utilities notificationIdKey]];
+}
 
 #pragma mark - schedule
 
@@ -130,10 +153,12 @@
     [self.alertNotifier setCompletitionHandler:finishBlock];
 }
 
+
 - (void)setActionAfterOpenApp:(CompletionAfterOpenAppFromNotification)afterOpenFinishBlock
 {
-    [self.alertNotifier setActionAfterOpenApp:afterOpenFinishBlock];
+    self.afterOpenFinishBlock = afterOpenFinishBlock;
 }
+
 
 - (void)setButtonTitles:(NSArray*)titles
 {

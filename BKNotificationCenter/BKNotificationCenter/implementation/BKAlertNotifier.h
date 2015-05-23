@@ -8,14 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "Blocks.h"
-@class UILocalNotification;
+@import UIKit;
+@class BKNotificationUtilities;
 
-@interface BKAlertNotifier : NSObject
+@interface BKAlertNotifier : NSObject <UIAlertViewDelegate>
+
+- (instancetype)initWithUtilities:(BKNotificationUtilities*)utilities;
 
 - (void)showAlertIfSharedAppIsActiveForLocalNotification:(UILocalNotification*)localNotification;
 
 - (void)setCompletitionHandler:(CompletionAlertBlock)finishBlock;
-- (void)setActionAfterOpenApp:(CompletionAfterOpenAppFromNotification)afterOpenFinishBlock;
 - (void)setButtonTitles:(NSArray*)titles;
 
 @end

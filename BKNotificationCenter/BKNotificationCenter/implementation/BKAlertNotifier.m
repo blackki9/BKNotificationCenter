@@ -7,23 +7,36 @@
 //
 
 #import "BKAlertNotifier.h"
+#import "BKNotificationUtilities.h"
 @import UIKit;
 
 @interface BKAlertNotifier ()
 
 @property (nonatomic, strong) NSArray* currentButtonTitles;
 @property (nonatomic,strong) CompletionAlertBlock finishBlock;
-@property (nonatomic,strong) CompletionAfterOpenAppFromNotification afterOpenFinishBlock;
+@property (nonatomic, copy) NSString* currentNotificationId;
+@property (nonatomic, strong) BKNotificationUtilities* utils;
 @end
 
 @implementation BKAlertNotifier
 
+- (instancetype)initWithUtilities:(BKNotificationUtilities*)utilities
+{
+    if(self = [super init]) {
+        _utils = utilities;
+    }
+    
+    return self;
+}
 
 #pragma mark - alert
 
 - (void)showAlertIfSharedAppIsActiveForLocalNotification:(UILocalNotification*)localNotification
 {
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive ) {
+        
+        self.currentNotificationId = localNotification.userInfo[[self.utils notificationIdKey]];
+        
         [self showAlertForLocalNotification:localNotification];
     }
 }
@@ -57,15 +70,20 @@
     return alert;
 }
 
+#pragma mark - UIAlertView delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(self.finishBlock) {
+        self.finishBlock(buttonIndex,self.currentNotificationId);
+    }
+}
+
+#pragma mark - setters
 
 - (void)setCompletitionHandler:(CompletionAlertBlock)finishBlock
 {
     self.finishBlock = finishBlock;
-}
-
-- (void)setActionAfterOpenApp:(CompletionAfterOpenAppFromNotification)afterOpenFinishBlock
-{
-    self.afterOpenFinishBlock = afterOpenFinishBlock;
 }
 
 - (void)setButtonTitles:(NSArray*)titles
